@@ -8,7 +8,7 @@ export PYTHONUNBUFFERED="True"
 GPU_ID=$1
 DATASET=$2
 NET=$3 # vgg16 supported
-USE_HIST=$4 # whether to use class-specific context aggregation
+USE_HIST=$4 # whether to use class-specific context aggregation (must = 1 for all models on google drive)
 USE_POST=$5 # whether to use posterior class-probability adjustments
 NBR_FIX=$6 # <= 0: auto-stop; >= 1: enforce exactly that nbr fixations / image
 

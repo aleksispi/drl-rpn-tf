@@ -49,6 +49,16 @@ All pretrained models (both Faster R-CNN baseline and our drl-RPN models) for th
 - Faster R-CNN trained on VOC 2007+2012 trainval: https://drive.google.com/open?id=1UEvjBJwJFoGnv1DhrIsqmJWWWli8C9G4
 - Faster R-CNN trained on VOC 2007+2012 trainval + 2007 test: https://drive.google.com/open?id=1ZFGuOitd8GA9QhqsdAYgc8Z0bILK0h3H
 
+### Troubleshooting
+Here are solutions to some potential issues:
+- **Problem:**
+```
+import pycocotools._mask as _mask
+ImportError: No module named _mask
+Command exited with non-zero status 1
+```
+- **Solution:** Go to `data/coco/PythonAPI/` and run `make` in your ubuntu terminal. Now it should be fine! 
+
 ### Citation
 If you find this implementation or our [CVPR 2018 paper](http://openaccess.thecvf.com/content_cvpr_2018/papers/Pirinen_Deep_Reinforcement_Learning_CVPR_2018_paper.pdf) interesting or helpful, please consider citing:
 
