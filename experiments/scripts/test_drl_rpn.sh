@@ -7,16 +7,14 @@ export PYTHONUNBUFFERED="True"
 
 GPU_ID=$1
 DATASET=$2
-NET=$3 # only vgg16 supported currently
-WEIGHTS=$4
-USE_HIST=$5 # whether to use class-specific context aggregation
-USE_POST=$6 # whether to use posterior class-probability adjustments
-NBR_FIX=$7 # <= 0: auto-stop; >= 1: enforce exactly that nbr fixations / image
-SET_IDX=$8 # consider refactoring this out (used to run on several work stations)
+NET=$3 # vgg16 supported
+USE_HIST=$4 # whether to use class-specific context aggregation
+USE_POST=$5 # whether to use posterior class-probability adjustments
+NBR_FIX=$6 # <= 0: auto-stop; >= 1: enforce exactly that nbr fixations / image
 
 array=( $@ )
 len=${#array[@]}
-EXTRA_ARGS=${array[@]:8:$len}
+EXTRA_ARGS=${array[@]:6:$len}
 EXTRA_ARGS_SLUG=${EXTRA_ARGS// /_}
 
 case ${DATASET} in
@@ -58,31 +56,8 @@ case ${DATASET} in
     ;;
 esac
 
-# Set up paths according to your own system
-case $SET_IDX in
-  1)
-    WEIGHTS_PATH=/home/aleksis/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/set${SET_IDX}/${WEIGHTS}
-    ;;
-  2)
-    WEIGHTS_PATH=/home/aleksis/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/set${SET_IDX}/${WEIGHTS}
-    ;;
-  3)
-    WEIGHTS_PATH=/home/aleksis/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/set${SET_IDX}/${WEIGHTS}
-    ;;
-  4)
-    WEIGHTS_PATH=/home/aleksis/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/set${SET_IDX}/${WEIGHTS}
-    ;;
-  5)
-    WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/set${SET_IDX}/${WEIGHTS}
-    ;;
-  6)
-    WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/set${SET_IDX}/${WEIGHTS}
-    ;;
-  *)
-    echo "The set-idx / weight path does not exist!"
-    exit
-    ;;
-esac
+# Set up base weights paths according to your own system
+WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/drl-rpn-voc2007-2012-trainval/vgg16_drl_rpn_iter_110000.ckpt
 
 if [[ ! -z  ${EXTRA_ARGS_SLUG}  ]]; then
   CUDA_VISIBLE_DEVICES=${GPU_ID} time python ./tools/test_net.py \
@@ -94,7 +69,6 @@ if [[ ! -z  ${EXTRA_ARGS_SLUG}  ]]; then
     --use_hist ${USE_HIST} \
     --use_post ${USE_POST} \
     --nbr_fix ${NBR_FIX} \
-    --set_idx ${SET_IDX} \
     --set NBR_CLASSES ${NBR_CLASSES} ANCHOR_SCALES ${ANCHORS} \
           ANCHOR_RATIOS ${RATIOS} ${EXTRA_ARGS}
 else
@@ -106,7 +80,6 @@ else
     --use_hist ${USE_HIST} \
     --use_post ${USE_POST} \
     --nbr_fix ${NBR_FIX} \
-    --set_idx ${SET_IDX} \
     --set NBR_CLASSES ${NBR_CLASSES} ANCHOR_SCALES ${ANCHORS} \
           ANCHOR_RATIOS ${RATIOS} ${EXTRA_ARGS}
 fi

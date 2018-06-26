@@ -54,9 +54,6 @@ def parse_args():
   parser.add_argument('--nbr_fix', dest='nbr_fix',
                       help='0: auto-stop, > 0 run drl-RPN exactly nbr_fix steps',
                       default=0, type=int)
-  parser.add_argument('--set_idx', dest='set_idx',
-                      help='1-4 = frege machine, 5-6 = desktop machine',
-                      default=5, type=int)
   parser.add_argument('--set', dest='set_cfgs',
                       help='set config keys', default=None,
                       nargs=argparse.REMAINDER)
@@ -98,8 +95,6 @@ if __name__ == '__main__':
   extra_string = ''
   if args.imdb_name == 'voc_2012_test':
     extra_string += '_test'
-  if args.set_idx in [1, 2, 3, 4]:
-    extra_string += '_frege'
   imdb = get_imdb(args.imdb_name + extra_string)
   imdb.competition_mode(args.comp_mode)
 

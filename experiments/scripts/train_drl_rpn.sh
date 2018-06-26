@@ -7,17 +7,16 @@ export PYTHONUNBUFFERED="True"
 
 GPU_ID=$1
 DATASET=$2
-NET=$3 # only vgg16 supported currently
+NET=$3 # vgg16 supported
 WEIGHTS=$4
 USE_HIST=$5 # whether to use class-specific context aggregation
 DET_START=$6 # when to start detector-tuning (alternate policy, detector training)
 USE_POST=$7 # whether to train posterior class-probability adjustments (assumes pretrained drl-RPN model)
 ITERS=$8 # number of iterations (images to iterate) in training
-SET_IDX=$9 # consider refactoring this out (used to run on several work stations)
 
 array=( $@ )
 len=${#array[@]}
-EXTRA_ARGS=${array[@]:9:$len}
+EXTRA_ARGS=${array[@]:8:$len}
 EXTRA_ARGS_SLUG=${EXTRA_ARGS// /_}
 
 case ${DATASET} in
