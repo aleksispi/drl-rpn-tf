@@ -7,15 +7,15 @@ export PYTHONUNBUFFERED="True"
 
 GPU_ID=$1
 DATASET=$2
-NET=$3 # vgg16 supported
-USE_HIST=$4 # whether to use class-specific context aggregation (must = 1 for all models on google drive)
-USE_POST=$5 # whether to use posterior class-probability adjustments
-NBR_FIX=$6 # <= 0: auto-stop; >= 1: enforce exactly that nbr fixations / image
+USE_HIST=$3 # whether to use class-specific context aggregation (must = 1 for all models on google drive)
+USE_POST=$4 # whether to use posterior class-probability adjustments
+NBR_FIX=$5 # <= 0: auto-stop; >= 1: enforce exactly that nbr fixations / image
 
 array=( $@ )
 len=${#array[@]}
-EXTRA_ARGS=${array[@]:6:$len}
+EXTRA_ARGS=${array[@]:5:$len}
 EXTRA_ARGS_SLUG=${EXTRA_ARGS// /_}
+NET=vgg16
 
 case ${DATASET} in
   pascal_voc)
@@ -57,7 +57,14 @@ case ${DATASET} in
 esac
 
 # Set up base weights paths according to your own system
-WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/drl-rpn-voc2007-2012-trainval/vgg16_drl_rpn_iter_110000.ckpt
+case ${DATASET} in
+  pascal_voc_0712_test)
+    WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/drl-rpn-voc2007-2012-trainval-plus-2007test/vgg16_2012_drl_rpn_iter_110000.ckpt
+    ;;
+  *)
+    WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/drl-rpn-voc2007-2012-trainval/vgg16_drl_rpn_iter_110000.ckpt
+    ;;
+esac
 
 if [[ ! -z  ${EXTRA_ARGS_SLUG}  ]]; then
   CUDA_VISIBLE_DEVICES=${GPU_ID} time python ./tools/test_net.py \

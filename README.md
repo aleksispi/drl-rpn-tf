@@ -15,7 +15,7 @@ The drl-RPN model is implemented on top of the publicly available TensorFlow VGG
   ```
 2. For steps 2-4, see "Installation" on [this page](https://github.com/endernewton/tf-faster-rcnn).
 
-### Detection Performance
+### Detection performance
 The current code supports VGG16 models. Exactly as for the Faster R-CNN implementation by Xinlei Chen, we report numbers using a single model on a single convolution layer, so no multi-scale, no multi-stage bounding box regression, no skip-connection, no extra input is used. The only data augmentation technique is left-right flipping during training following the original Faster R-CNN. 
 
 We first re-ran some of the experiments reported [here](https://github.com/endernewton/tf-faster-rcnn) for Faster R-CNN, but training the models longer to obtain further performance gains for our baseline models. We got:
@@ -42,12 +42,15 @@ The corresponding results when using our drl-RPN detector with exploration penal
     - Separation of rewards (Section 5.1.1 in the paper) does not yield accuracy gains for models trained over different exploration-accuracy trade-offs, so it is not used. See `reward_functions.py` for details.
     - The drl-RPN models are now much more fast to train than how it was done in the original paper (c.f. Section 5.2). Specifically, instead of sampling 50 search trajectories per image to estimate the policy gradient, we now run 50 search trajectories on 50 *different* images. This reduces training time by 5-10 times, yet we get results in the same ball park.
 
-### Pretrained Models
+### Pretrained models
 All pretrained models (both Faster R-CNN baseline and our drl-RPN models) for the numbers reported above in *Detection Performance* is available on google drive: XYZ.
 - drl-RPN trained on VOC 2007+2012 trainval: https://drive.google.com/open?id=1iK8fxp6no9g_-eZ2b2G0FRKV0cfUX53r
 - drl-RPN trained on VOC 2007+2012 trainval + 2007 test: https://drive.google.com/open?id=1rNwmXLz9VCdK3s6dFqBH3rqpuVFtMLK7
 - Faster R-CNN trained on VOC 2007+2012 trainval: https://drive.google.com/open?id=1UEvjBJwJFoGnv1DhrIsqmJWWWli8C9G4
 - Faster R-CNN trained on VOC 2007+2012 trainval + 2007 test: https://drive.google.com/open?id=1ZFGuOitd8GA9QhqsdAYgc8Z0bILK0h3H
+
+### Object detection datasets
+See "Setup data" on [this page](https://github.com/endernewton/tf-faster-rcnn). Essentially download the dataset you are interested (e.g. PASCAL VOC), and add soft links in the `data` folder in the appropriate way (see https://askubuntu.com/questions/56339/how-to-create-a-soft-or-symbolic-link for generic how-to for setting soft links).
 
 ### Troubleshooting
 Here are solutions to some potential issues:

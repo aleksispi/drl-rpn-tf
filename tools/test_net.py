@@ -93,8 +93,11 @@ if __name__ == '__main__':
   # This extra_string used by me (Aleksis) when running code on two
   # different machines, for convenience
   extra_string = ''
+  print(args.imdb_name)
   if args.imdb_name == 'voc_2012_test':
     extra_string += '_test'
+  #print(args.imdb_name + extra_string)
+  #sleep(100)
   imdb = get_imdb(args.imdb_name + extra_string)
   imdb.competition_mode(args.comp_mode)
 

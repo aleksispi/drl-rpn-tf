@@ -6,3 +6,6 @@
 output/
 data/VOCdevkit2007
 data/VOCdevkit2012
+data/VOCdevkit2007
+data/VOCdevkit2012
+data/VOCdevkit2012_test
