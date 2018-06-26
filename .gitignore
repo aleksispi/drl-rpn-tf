@@ -1,0 +1,6 @@
+*.pyc
+*.log
+*.jpg
+*.pkl
+*.nfs*
+output/
