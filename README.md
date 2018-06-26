@@ -33,7 +33,7 @@ The corresponding results when using our drl-RPN detector with exploration penal
 | RPN              | 76.5           | 74.2           |
 | drl-RPN          | 77.5           | 74.9           |
 | drl-RPN (np)     | 77.2           | 74.6           |
-| drl-RPN (12-fix) | 77.6           | 74.6           |
+| drl-RPN (12-fix) | 77.6           | 75.0           |
 
 **Note**:
   - All settings are shared with that of Xinlei Chen for the things relating to Faster R-CNN.
