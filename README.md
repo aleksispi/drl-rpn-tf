@@ -30,7 +30,7 @@ The corresponding results when using our drl-RPN detector with exploration penal
 
 | Model            | mAP - VOC 2007 | mAP - VOC 2012 |
 | ---------------- | -------------- | -------------- |
-| RPN              | 76.5           | 74.0           |
+| RPN              | 76.5           | 74.2           |
 | drl-RPN          | 77.5           | 74.9           |
 | drl-RPN (np)     | 77.2           | 74.6           |
 | drl-RPN (12-fix) | 77.6           | 74.6           |
