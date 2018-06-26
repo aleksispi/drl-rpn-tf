@@ -36,7 +36,7 @@ The corresponding results when using our drl-RPN detector with exploration penal
 | drl-RPN (12-fix) | 77.6           | 75.0           |
 
 **Note**:
-  - All settings are shared with that of Xinlei Chen for the things relating to Faster R-CNN.
+  - All settings are shared with that of Xinlei Chen for the things relating to the baseline Faster R-CNN model (RPN).
   - See the code for any deviations from the [CVPR 2018 paper](http://openaccess.thecvf.com/content_cvpr_2018/papers/Pirinen_Deep_Reinforcement_Learning_CVPR_2018_paper.pdf). Some important changes post-CVPR:
     - Training over different exploration-accuracy trade-offs is now the default model (as opposed to training for a fixed exploration penalty). Hence the default model allows for setting the exploration-accuracy trade-off during testing (c.f. Section 5.1.2 and Figure 6 in the paper). Turns out we only need two different exploration penalties (0.05 and 0.35 was used), but setting any other trade-off parameters during inference is possible.
     - Separation of rewards (Section 5.1.1 in the paper) does not yield accuracy gains for models trained over different exploration-accuracy trade-offs, so it is not used. See `reward_functions.py` for details.

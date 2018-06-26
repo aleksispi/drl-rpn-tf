@@ -7,17 +7,16 @@ export PYTHONUNBUFFERED="True"
 
 GPU_ID=$1
 DATASET=$2
-NET=$3 # vgg16 supported
-WEIGHTS=$4
-USE_HIST=$5 # whether to use class-specific context aggregation
-DET_START=$6 # when to start detector-tuning (alternate policy, detector training)
-USE_POST=$7 # whether to train posterior class-probability adjustments (assumes pretrained drl-RPN model)
-ITERS=$8 # number of iterations (images to iterate) in training
+USE_HIST=$3 # whether to use class-specific context aggregation (likely want = 1)
+DET_START=$4 # when to start detector-tuning (alternate policy, detector training, I used 20000)
+USE_POST=$5 # whether to train posterior class-probability adjustments (assumes pretrained drl-RPN model)
+ITERS=$6 # number of iterations (images to iterate) in training
 
 array=( $@ )
 len=${#array[@]}
-EXTRA_ARGS=${array[@]:8:$len}
+EXTRA_ARGS=${array[@]:6:$len}
 EXTRA_ARGS_SLUG=${EXTRA_ARGS// /_}
+NET=vgg16
 
 case ${DATASET} in
   pascal_voc)
@@ -65,34 +64,14 @@ esac
 # Set up paths according to your own system
 # Below MAIN_PATH is used when saving trained weights, whereas WEIGHTS_PATH
 # is used for loading existing weights
-case $SET_IDX in
-  1)
-    MAIN_PATH=/home/aleksis/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/set${SET_IDX}
-    WEIGHTS_PATH=/home/aleksis/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/data/pretrained_models/${WEIGHTS}
-    ;;
-  2)
-    MAIN_PATH=/home/aleksis/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/set${SET_IDX}
-    WEIGHTS_PATH=/home/aleksis/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/data/pretrained_models/${WEIGHTS}
-    ;;
-  3)
-    MAIN_PATH=/home/aleksis/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/set${SET_IDX}
-    WEIGHTS_PATH=/home/aleksis/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/data/pretrained_models/${WEIGHTS}
-    ;;
-  4)
-    MAIN_PATH=/home/aleksis/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/set${SET_IDX}
-    WEIGHTS_PATH=/home/aleksis/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/data/pretrained_models/${WEIGHTS}
-    ;;
-  5)
-    MAIN_PATH=/media/aleksis/B872DFD372DF950A/phd/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/set${SET_IDX}
-    WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/data/pretrained_models/${WEIGHTS}
-    ;;
-  6)
-    MAIN_PATH=/media/aleksis/B872DFD372DF950A/phd/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/set${SET_IDX}
-    WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/faster_rcnn_tf_data_and_output/tf-faster-rcnn/rl/data/pretrained_models/${WEIGHTS}
+case ${DATASET} in
+  pascal_voc_0712_test)
+    MAIN_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/output-weights/drl-rpn-voc2007-2012-trainval-plus-2007test/
+    WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/fr-rcnn-voc2007-2012-trainval-plus-2007test/vgg16_2012_faster_rcnn_iter_180000.ckpt
     ;;
   *)
-    echo "The set-idx / weight path does not exist!"
-    exit
+    MAIN_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/output-weights/drl-rpn-voc2007-2012-trainval/
+    WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/fr-rcnn-voc2007-2012-trainval/vgg16_faster_rcnn_iter_180000.ckpt
     ;;
 esac
 
@@ -110,7 +89,6 @@ if [ ! -f ${NET_FINAL}.index ]; then
       --use_hist ${USE_HIST} \
       --det_start ${DET_START} \
       --use_post ${USE_POST} \
-      --set_idx ${SET_IDX} \
       --set ANCHOR_SCALES ${ANCHORS} ANCHOR_RATIOS ${RATIOS} \
             NBR_CLASSES ${NBR_CLASSES} TRAIN.STEPSIZE ${STEPSIZE} \
             DRL_RPN_TRAIN.STEPSIZE ${DRL_RPN_STEPSIZE} ${EXTRA_ARGS}
@@ -126,7 +104,6 @@ if [ ! -f ${NET_FINAL}.index ]; then
       --use_hist ${USE_HIST} \
       --det_start ${DET_START} \
       --use_post ${USE_POST} \
-      --set_idx ${SET_IDX} \
       --set ANCHOR_SCALES ${ANCHORS} ANCHOR_RATIOS ${RATIOS} \
             NBR_CLASSES ${NBR_CLASSES} TRAIN.STEPSIZE ${STEPSIZE} \
             DRL_RPN_TRAIN.STEPSIZE ${DRL_RPN_STEPSIZE} ${EXTRA_ARGS}

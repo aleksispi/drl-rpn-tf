@@ -187,7 +187,7 @@ class SolverWrapper(object):
     # hanged to BGR For VGG16 it also changes the convolutional weights fc6
     # and fc7 to fully connected weights
     #
-    # OBS: IF YOU WANT TO TRAIN FROM EXISTING FASTER
+    # NOTE: IF YOU WANT TO TRAIN FROM EXISTING FASTER
     # R-CNN WEIGHTS, AND NOT FROM IMAGENET WEIGHTS, SET BELOW FLAG TO FALSE!!!!
     self.net.fix_variables(sess, self.pretrained_model, False)
     print('Fixed.')

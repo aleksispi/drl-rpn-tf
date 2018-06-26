@@ -61,9 +61,6 @@ def parse_args():
   parser.add_argument('--use_post', dest='use_post',
                       help='-1 = dont train post-hist nudge, >=0: train onwards',
                       default=-1, type=int)
-  parser.add_argument('--set_idx', dest='set_idx',
-                      help='1-4 = frege machine, 5-6 = desktop machine',
-                      default=5, type=int)
   parser.add_argument('--set', dest='set_cfgs',
                       help='set config keys', default=None,
                       nargs=argparse.REMAINDER)
@@ -81,15 +78,8 @@ def combined_roidb(imdb_names):
   Combine multiple roidbs
   """
 
-  # This was used by me (Aleksis) when running code on two different machines,
-  # for convenience
-  if args.set_idx in [1, 2, 3, 4]:
-    extra_string = '_frege'
-  else:
-    extra_string = ''
-
   def get_roidb(imdb_name):
-    imdb = get_imdb(imdb_name + extra_string)
+    imdb = get_imdb(imdb_name)
     print('Loaded dataset `{:s}` for training'.format(imdb.name))
     imdb.set_proposal_method(cfg.TRAIN.PROPOSAL_METHOD)
     print('Set proposal method: {:s}'.format(cfg.TRAIN.PROPOSAL_METHOD))
@@ -101,10 +91,10 @@ def combined_roidb(imdb_names):
   if len(roidbs) > 1:
     for r in roidbs[1:]:
       roidb.extend(r)
-    tmp = get_imdb(imdb_names.split('+')[1] + extra_string)
+    tmp = get_imdb(imdb_names.split('+')[1])
     imdb = datasets.imdb.imdb(imdb_names, tmp.classes)
   else:
-    imdb = get_imdb(imdb_names + extra_string)
+    imdb = get_imdb(imdb_names)
   return imdb, roidb
 
 
