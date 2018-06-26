@@ -4,3 +4,5 @@
 *.pkl
 *.nfs*
 output/
+data/VOCdevkit2007
+data/VOCdevkit2012
