@@ -11,7 +11,7 @@ The drl-RPN model is implemented on top of the publicly available TensorFlow VGG
 ### Installation
 1. Clone the repository
   ```Shell
-  git clone https://github.com/aleksispi/drl-rpn.git
+  git clone https://github.com/aleksispi/drl-rpn-tf.git
   ```
 2. For steps 2-4, see "Installation" on [this page](https://github.com/endernewton/tf-faster-rcnn).
 
