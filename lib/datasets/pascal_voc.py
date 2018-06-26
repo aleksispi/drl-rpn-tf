@@ -237,11 +237,6 @@ class pascal_voc(imdb):
                     format(index, dets[k, -1],
                            dets[k, 0] + 1, dets[k, 1] + 1,
                            dets[k, 2] + 1, dets[k, 3] + 1))
-    if '2012' in self._year:
-      pass
-      file_path = os.path.join(file_path_start, 'results')
-      make_archive(file_path, 'gztar', file_path, 'results')
-      rmtree(file_path)
 
 
   def _do_python_eval(self, output_dir='output', start_idx=None, end_idx=None):
