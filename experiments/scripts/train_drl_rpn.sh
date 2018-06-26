@@ -62,16 +62,30 @@ case ${DATASET} in
 esac
 
 # Set up paths according to your own system
-# Below MAIN_PATH is used when saving trained weights, whereas WEIGHTS_PATH
+# Below SAVE_PATH is used when saving trained weights, whereas WEIGHTS_PATH
 # is used for loading existing weights
 case ${DATASET} in
   pascal_voc_0712_test)
-    MAIN_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/output-weights/drl-rpn-voc2007-2012-trainval-plus-2007test/
-    WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/fr-rcnn-voc2007-2012-trainval-plus-2007test/vgg16_2012_faster_rcnn_iter_180000.ckpt
+    SAVE_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/output-weights/drl-rpn-voc2007-2012-trainval+2007test/
+    case ${USE_POST} in
+      0)
+        WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/fr-rcnn-voc2007-2012-trainval+2007test/vgg16_2012_faster_rcnn_iter_180000.ckpt
+        ;;
+      *)
+        WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/drl-rpn-voc2007-2012-trainval+2007test/vgg16_2012_drl_rpn_iter_110000.ckpt
+        ;;
+    esac
     ;;
   *)
-    MAIN_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/output-weights/drl-rpn-voc2007-2012-trainval/
-    WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/fr-rcnn-voc2007-2012-trainval/vgg16_faster_rcnn_iter_180000.ckpt
+    SAVE_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/output-weights/drl-rpn-voc2007-2012-trainval/
+    case ${USE_POST} in
+      0)
+        WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/fr-rcnn-voc2007-2012-trainval/vgg16_faster_rcnn_iter_180000.ckpt
+        ;;
+      *)
+        WEIGHTS_PATH=/media/aleksis/B872DFD372DF950A/phd/drl-rpn/drl-rpn-voc2007-2012-trainval/vgg16_drl_rpn_iter_110000.ckpt
+        ;;
+    esac
     ;;
 esac
 
@@ -79,7 +93,7 @@ if [ ! -f ${NET_FINAL}.index ]; then
   if [[ ! -z  ${EXTRA_ARGS_SLUG}  ]]; then
     CUDA_VISIBLE_DEVICES=${GPU_ID} time python ./tools/trainval_net.py \
       --weight ${WEIGHTS_PATH} \
-      --main ${MAIN_PATH} \
+      --save ${SAVE_PATH} \
       --imdb ${TRAIN_IMDB} \
       --imdbval ${TEST_IMDB} \
       --iters ${ITERS} \
@@ -95,7 +109,7 @@ if [ ! -f ${NET_FINAL}.index ]; then
   else
     CUDA_VISIBLE_DEVICES=${GPU_ID} time python ./tools/trainval_net.py \
       --weight ${WEIGHTS_PATH} \
-      --main ${MAIN_PATH} \
+      --save ${SAVE_PATH} \
       --imdb ${TRAIN_IMDB} \
       --imdbval ${TEST_IMDB} \
       --iters ${ITERS} \

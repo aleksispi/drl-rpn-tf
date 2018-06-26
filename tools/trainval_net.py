@@ -34,8 +34,8 @@ def parse_args():
   parser.add_argument('--weight', dest='weight',
                       help='initialize with pretrained model weights',
                       type=str)
-  parser.add_argument('--main', dest='main_path',
-                      help='main path for load / save model weights',
+  parser.add_argument('--save', dest='save_path',
+                      help='path for saving model weights',
                       type=str)
   parser.add_argument('--imdb', dest='imdb_name',
                       help='dataset to train on',
@@ -134,7 +134,7 @@ if __name__ == '__main__':
   cfg_from_list(['DRL_RPN_TRAIN.DET_START', args.det_start])
 
   # output directory where the models are saved
-  output_dir = get_output_dir(imdb, args.tag, args.main_path)
+  output_dir = get_output_dir(imdb, args.tag, args.save_path)
   print('Output will be saved to `{:s}`'.format(output_dir))
 
   # also add the validation set, but with no flipping images
