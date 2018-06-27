@@ -376,6 +376,20 @@ def sample_fix_loc(fix_prob, mode='train'):
   return fix_loc[0], fix_loc[1], first_smaller_than_idx_linear
 
 
+# If experimenting with ways of reducing RoIs further, can use this
+def _extract_topK_objness_per_channel_rois(roi_obs_vol, rpn_cls_prob_topK, t,
+                                           not_keep_ids):
+  if not cfg.DRL_RPN.USE_AGNO:
+    roi_obs_vol_copy = np.zeros_like(roi_obs_vol)
+    roi_obs_vol_copy[rpn_cls_prob_topK] = roi_obs_vol[rpn_cls_prob_topK]
+  else:
+    roi_obs_vol_copy = np.copy(roi_obs_vol)
+  roi_obs_vol_copy = (roi_obs_vol_copy == t).reshape((-1))
+  if cfg.DRL_RPN.USE_AGNO:
+    roi_obs_vol_copy[not_keep_ids] = 0
+  return roi_obs_vol_copy
+
+
 # Run drl-RPN detector on an image blob
 def run_drl_rpn(sess, net, blob, timers, mode, beta, im_idx=None,
                 extra_args=None):
