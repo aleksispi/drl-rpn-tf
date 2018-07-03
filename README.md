@@ -53,7 +53,7 @@ All pretrained models (both Faster R-CNN baseline and our drl-RPN models) for th
 See "Setup data" on [this page](https://github.com/endernewton/tf-faster-rcnn). Essentially download the dataset you are interested (e.g. PASCAL VOC), and add soft links in the `data` folder in the appropriate way (see https://askubuntu.com/questions/56339/how-to-create-a-soft-or-symbolic-link for generic how-to for setting soft links).
 
 ### Training drl-RPN
-1. Download and setup the Pascal VOC datasets (see *Object detection datasets* above).
+1. Download and setup the datasets (see *Object detection datasets* above).
 2. Download the desired pretrained Faster R-CNN model (see *Pretrained models* above).
 3. The main script to launch training is `experiments/scripts/train_drl_rpn.sh`. Setup `SAVE_PATH` and `WEIGHT_PATH` appropriately, and run the command
 `./experiments/scripts/train_drl_rpn.sh 0 pascal_voc_0712 1 20000 0 110000` to start training on VOC 2007+2012 trainval on GPU-id 0 for a total of 110k iterations (see code for more details). This will yield a drl-RPN model trained over two exploration penalties, enabling setting the speed-accuracy trade-off at test time. See also `experiments/cfgs/drl-rpn-vgg16.yml` for some settings.

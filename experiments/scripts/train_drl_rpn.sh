@@ -9,7 +9,7 @@ GPU_ID=$1
 DATASET=$2
 USE_HIST=$3 # whether to use class-specific context aggregation (likely want = 1)
 DET_START=$4 # when to start detector-tuning (alternate policy, detector training, I used 20000)
-USE_POST=$5 # whether to train posterior class-probability adjustments (assumes pretrained drl-RPN model)
+USE_POST=$5 # whether to train posterior class-probability adjustments (assumes pretrained drl-RPN model (i.e. first set USE_POST=0))
 ITERS=$6 # number of iterations (images to iterate) in training
 
 array=( $@ )
