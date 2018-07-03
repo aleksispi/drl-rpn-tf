@@ -67,7 +67,7 @@ def test_net(sess, net, imdb, weights_filename, max_per_image=100, thresh=0.00):
   avg_frac = 0.0
 
   # Create StatCollector (tracks various drl-RPN test statistics)
-  stat_strings = ['traj-len', 'frac-area']
+  stat_strings = ['#fix/img', 'exploration']
   sc = StatCollector(nbr_images, stat_strings, False)
 
   # Try getting gt-info if available
@@ -76,8 +76,8 @@ def test_net(sess, net, imdb, weights_filename, max_per_image=100, thresh=0.00):
   except:
     gt_roidb = None
 
-  # VISUALIZE?
-  do_visualize = False
+  # Visualize search trajectories?
+  do_visualize = cfg.DRL_RPN_TEST.DO_VISUALIZE
 
   # Can be convenient to run from some other image, especially if visualizing,
   # but having nbr_ims_eval = nbr_images and start_idx = 0 --> regular testing!
@@ -107,7 +107,7 @@ def test_net(sess, net, imdb, weights_filename, max_per_image=100, thresh=0.00):
 
     # Update and print some stats
     sc.update(0, stats)
-    sc.print_stats()
+    sc.print_stats(False)
 
     _t['misc'].tic()
     # skip j = 0, because it's the background class
@@ -134,7 +134,7 @@ def test_net(sess, net, imdb, weights_filename, max_per_image=100, thresh=0.00):
     print('\nim_detect: {:d}/{:d} {:.3f}s {:.3f}s' \
         .format(i + 1, nbr_images, _t['im_detect'].average_time,
             _t['misc'].average_time))
-    print_timings(_t_drl_rpn)
+    #print_timings(_t_drl_rpn) # uncomment for some timing details!
 
   det_file = os.path.join(output_dir, 'detections.pkl')
   with open(det_file, 'wb') as f:

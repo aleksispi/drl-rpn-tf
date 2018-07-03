@@ -519,14 +519,11 @@ def run_drl_rpn(sess, net, blob, timers, mode, beta, im_idx=None,
 
         # Make into final form (want to compute IoU post-bbox regression, so that
         # optimization objective is closer to the final detection task)
-        if not cfg.DRL_RPN.USE_HIST or not cfg.DRL_RPN_TRAIN.REW_AFTER_NMS:
-          if rois_seq is None:
-            pred_bboxes_fix = None
-          else:
-            pred_bboxes_fix = bbox_transform_inv(rois_seq, bbox_preds_seq)
-            pred_bboxes_fix = clip_boxes(pred_bboxes_fix, im_shape)
+        if rois_seq is None:
+          pred_bboxes_fix = None
         else:
-          pred_bboxes_fix = pred_bboxes_uptonow[keeps_nms[0], :]
+          pred_bboxes_fix = bbox_transform_inv(rois_seq, bbox_preds_seq)
+          pred_bboxes_fix = clip_boxes(pred_bboxes_fix, im_shape)
 
         # Fixation reward computation
         rew_fix, gt_max_ious = net.reward_fixate(pred_bboxes_fix, gt_boxes,
@@ -582,7 +579,7 @@ def run_drl_rpn(sess, net, blob, timers, mode, beta, im_idx=None,
   # Save visualization (if desired)
   if im_idx is not None:
     save_visualization(im_blob, im_shape, im_idx, obs_canvas_all, scores,
-                       pred_bboxes, fix_tracker, 0, 0)
+                       pred_bboxes, fix_tracker, 0, 1)
 
   # Depending on what mode, return different things
   frac_area = float(np.count_nonzero(obs_canvas)) / np.prod(obs_canvas.shape)
@@ -663,7 +660,7 @@ def print_timings(timers):
      timers['coll-traj'].diff))
 
 
-def produce_det_bboxes(im, scores, det_bboxes, fix_tracker, thresh_post=0.70,
+def produce_det_bboxes(im, scores, det_bboxes, fix_tracker, thresh_post=0.80,
                        thresh_pre=0.0):
   """
   Based on the forward pass in a detector, extract final detection

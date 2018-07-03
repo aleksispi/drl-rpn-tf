@@ -242,9 +242,6 @@ __C.DRL_RPN_TRAIN.USE_BL = True
 # Moving average factor 
 __C.DRL_RPN_TRAIN.MA_WEIGHT = 0.0005
 
-# Use final NMS'd detection boxes in rewards, or use before final NMS?
-__C.DRL_RPN_TRAIN.REW_AFTER_NMS = False
-
 # IoU-thresholds in rewards
 __C.DRL_RPN_TRAIN.IOU_THRESH = 0.5
 
@@ -266,6 +263,9 @@ __C.DRL_RPN_TEST.BETA = 0.10
 
 # Run a certain number of fixations in drl-RPN?
 __C.DRL_RPN_TEST.NBR_FIX = 0 # 0 = automatic stopping
+
+# Visualize drl-RPN search trajectories?
+__C.DRL_RPN_TEST.DO_VISUALIZE = False
 
 # GENEREAL
 __C.DRL_RPN = edict()

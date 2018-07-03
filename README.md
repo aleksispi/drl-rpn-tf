@@ -18,11 +18,11 @@ The drl-RPN model is implemented on top of the publicly available TensorFlow VGG
 ### Detection performance
 The current code supports VGG16 models. Exactly as for the Faster R-CNN implementation by Xinlei Chen, we report numbers using a single model on a single convolution layer, so no multi-scale, no multi-stage bounding box regression, no skip-connection, no extra input is used. The only data augmentation technique is left-right flipping during training following the original Faster R-CNN. 
 
-We first re-ran some of the experiments reported [here](https://github.com/endernewton/tf-faster-rcnn) for Faster R-CNN, but training the models longer to obtain further performance gains for our baseline models. We got:
+We first re-ran some of the experiments reported [here](https://github.com/endernewton/tf-faster-rcnn) for Faster R-CNN, but trained the models longer to obtain further performance gains for our baseline models. We got:
   - Train on VOC 2007+2012 trainval (*iterations*: 100k/180k) and test on VOC 2007 test (trained like [here](https://github.com/endernewton/tf-faster-rcnn), but for more iterations), **76.5**.
   - Train on VOC 2007+2012 trainval + 2007 test (*iterations*: 100k/180k) and test on VOC 2012 test, **74.0**.
 
-The corresponding results when using our drl-RPN detector with exploration penalty 0.05 during inference (models trained over different exploration penalties, as described in Section 5.1.2 in the paper) and posterior class-probability adjustments:
+The corresponding results when using our drl-RPN detector with exploration penalty 0.05 during inference (models trained over different exploration penalties, as described in Section 5.1.2 in the paper) and posterior class-probability adjustments (Section 4.2 in our paper):
   - Train on VOC 2007+2012 trainval (*iterations*: 90k/110k for core model, 80k/110k for posterior class-probability adjustment module) and test on VOC 2007 test (trained like [here](https://github.com/endernewton/tf-faster-rcnn), but for more iterations), **77.5**. Without posterior class-probability adjustments (np): 77.2. Average exploration (% RoIs forwarded per image on average): 28.0%. Average number of fixations per image: 5.6.
   - Train on VOC 2007+2012 trainval + 2007 test (*iterations*: 90k/110k, 80k/110k for posterior class-probability adjustment module) and test on VOC 2012 test, **74.9**. Without posterior class-probability adjustments (np): 74.6. Average exploration (% RoIs forwarded per image on average): 30.6%. Average number of fixations per image: 6.7.
 
@@ -43,7 +43,7 @@ The corresponding results when using our drl-RPN detector with exploration penal
     - The drl-RPN models are now much more fast to train than how it was done in the original paper (c.f. Section 5.2). Specifically, instead of sampling 50 search trajectories per image to estimate the policy gradient, we now run 50 search trajectories on 50 *different* images. This reduces training time by 5-10 times, yet we get results in the same ball park.
 
 ### Pretrained models
-All pretrained models (both Faster R-CNN baseline and our drl-RPN models) for the numbers reported above in *Detection Performance* is available on google drive: XYZ.
+All pretrained models (both Faster R-CNN baseline and our drl-RPN models) for the numbers reported above in *Detection Performance* is available on google drive:
 - drl-RPN trained on VOC 2007+2012 trainval: https://drive.google.com/open?id=1iK8fxp6no9g_-eZ2b2G0FRKV0cfUX53r
 - drl-RPN trained on VOC 2007+2012 trainval + 2007 test: https://drive.google.com/open?id=1rNwmXLz9VCdK3s6dFqBH3rqpuVFtMLK7
 - Faster R-CNN trained on VOC 2007+2012 trainval: https://drive.google.com/open?id=1UEvjBJwJFoGnv1DhrIsqmJWWWli8C9G4
@@ -51,6 +51,17 @@ All pretrained models (both Faster R-CNN baseline and our drl-RPN models) for th
 
 ### Object detection datasets
 See "Setup data" on [this page](https://github.com/endernewton/tf-faster-rcnn). Essentially download the dataset you are interested (e.g. PASCAL VOC), and add soft links in the `data` folder in the appropriate way (see https://askubuntu.com/questions/56339/how-to-create-a-soft-or-symbolic-link for generic how-to for setting soft links).
+
+### Training drl-RPN
+1. Download and setup the Pascal VOC datasets (see *Object detection datasets* above).
+2. Download the desired pretrained Faster R-CNN model (see *Pretrained models* above).
+3. The main script to launch training is `experiments/scripts/train_drl_rpn.sh`. Setup `SAVE_PATH` and `WEIGHT_PATH` appropriately, and run the command
+`./experiments/scripts/train_drl_rpn.sh 0 pascal_voc_0712 1 20000 0 110000` to start training on VOC 2007+2012 trainval on GPU-id 0 for a total of 110k iterations (see code for more details). This will yield a drl-RPN model trained over two exploration penalties, enabling setting the speed-accuracy trade-off at test time. See also `experiments/cfgs/drl-rpn-vgg16.yml` for some settings.
+4. Once the above model has finished training in step 3, it is also possible to train the posterior class-probability history module (c.f. Section 4.2 in our paper). To do this, first make sure that the `WEIGHTS_PATH` variable in `train_drl_rpn.sh` points to your drl-RPN model weights obtained in step 3 above. Then run `./experiments/scripts/train_drl_rpn.sh 0 pascal_voc_0712 1 0 1 110000` to train the posterior class-probability adjustment module for 110k iterations.
+
+### Testing drl-RPN
+1. Either make sure you have trained your own drl-RPN model (see *Training drl-RPN* above) or download pretrained weights (see *Pretrained models* above).
+2. The main script to launch testing is `experiments/scripts/test_drl_rpn.sh`. To test your model on the Pascal VOC 2007 test set on GPU-id 0, run `./experiments/scripts/test_drl_rpn.sh 0 pascal_voc_0712 1 1 0` (see code for more details). If you want to change the exploration-accuracy trade-off parameter, see `experiments/cfgs/drl-rpn-vgg16.yml`. You may also specify whether you want to visualize drl-RPN search trajectories here (visualizations are saved in the top folder).
 
 ### Troubleshooting
 Here are solutions to some potential issues:

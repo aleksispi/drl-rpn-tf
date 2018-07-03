@@ -102,21 +102,22 @@ class StatCollector(object):
         except:
           pass
 
-  def print_stats(self):
+  def print_stats(self, print_vs=True):
     if self.is_training:
       print('Mean loss (tot, MA):      (%f, %f)' % (self.mean_loss, self.ma_loss))
     for i in range(self.nbr_stats):
       print('Mean %s (tot, MA): %s(%f, %f)' \
         % (self.stat_strings[i], self.spaces[i], self.means[i], self.mas[i]))
-    print('Traj-len vs. # gt-instances:')
-    print(['%.2f' % g for g in self.means_traj_vs_gts])
-    print(['%.2f' % g for g in self.mas_traj_vs_gts])
-    try:
-      if len(self.means_traj_vs_betas) > 1:
-        print('Traj-len vs. betas:')
-        print(['%.3f: %.2f' % (b, self.means_traj_vs_betas[b]) \
-                for b in self.means_traj_vs_betas])
-        print(['%.3f: %.2f' % (b, self.mas_traj_vs_betas[b]) \
-                for b in self.mas_traj_vs_betas])
-    except:
-      pass
+    if print_vs:
+      print('Traj-len vs. # gt-instances:')
+      print(['%.2f' % g for g in self.means_traj_vs_gts])
+      print(['%.2f' % g for g in self.mas_traj_vs_gts])
+      try:
+        if len(self.means_traj_vs_betas) > 1:
+          print('Traj-len vs. betas:')
+          print(['%.3f: %.2f' % (b, self.means_traj_vs_betas[b]) \
+                  for b in self.means_traj_vs_betas])
+          print(['%.3f: %.2f' % (b, self.mas_traj_vs_betas[b]) \
+                  for b in self.mas_traj_vs_betas])
+      except:
+        pass
