@@ -2,6 +2,7 @@ EXP_DIR: vgg16_drl_rpn
 DIMS_BASE: 512
 DRL_RPN:
   USE_AGNO: False
+  # Setting TOPK_OBJNESS: 5 increases speed while not losing much acc.
   TOPK_OBJNESS: 0
 DRL_RPN_TRAIN:
   BETAS: [0.05, 0.35]
