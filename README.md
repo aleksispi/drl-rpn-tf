@@ -20,7 +20,7 @@ The current code supports VGG16 models. Exactly as for the Faster R-CNN implemen
 
 We first re-ran some of the experiments reported [here](https://github.com/endernewton/tf-faster-rcnn) for Faster R-CNN, but trained the models longer to obtain further performance gains for our baseline models. We got:
   - Train on VOC 2007+2012 trainval (*iterations*: 100k/180k) and test on VOC 2007 test (trained like [here](https://github.com/endernewton/tf-faster-rcnn), but for more iterations), **76.5**.
-  - Train on VOC 2007+2012 trainval + 2007 test (*iterations*: 100k/180k) and test on VOC 2012 test, **74.0**.
+  - Train on VOC 2007+2012 trainval + 2007 test (*iterations*: 100k/180k) and test on VOC 2012 test, **74.2**.
 
 The corresponding results when using our drl-RPN detector with exploration penalty 0.05 during inference (models trained over different exploration penalties, as described in Section 5.1.2 in the paper) and posterior class-probability adjustments (Section 4.2 in our paper):
   - Train on VOC 2007+2012 trainval (*iterations*: 90k/110k for core model, 80k/110k for posterior class-probability adjustment module) and test on VOC 2007 test (trained like [here](https://github.com/endernewton/tf-faster-rcnn), but for more iterations), **77.5**. Without posterior class-probability adjustments (np): 77.2. Average exploration (% RoIs forwarded per image on average): 28.0%. Average number of fixations per image: 5.6.
