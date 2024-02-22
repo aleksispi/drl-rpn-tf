@@ -78,9 +78,10 @@ Command exited with non-zero status 1
 ### Citation
 If you find this implementation or our [CVPR 2018 paper](http://openaccess.thecvf.com/content_cvpr_2018/papers/Pirinen_Deep_Reinforcement_Learning_CVPR_2018_paper.pdf) interesting or helpful, please consider citing:
 
-    @article{pirinen2018deep,
-        Author = {Aleksis Pirinen and Cristian Sminchisescu},
-        Title = {Deep Reinforcement Learning of Region Proposal Networks for Object Detection},
-        Journal = {IEEE Converence on Computer Vision and Pattern Recognition (CVPR)},
-        Year = {2018}
+    @inproceedings{pirinen2018deep,
+        title={Deep reinforcement learning of region proposal networks for object detection},
+        author={Pirinen, Aleksis and Sminchisescu, Cristian},
+        booktitle={proceedings of the IEEE conference on computer vision and pattern recognition},
+        pages={6945--6954},
+        year={2018}
     }
